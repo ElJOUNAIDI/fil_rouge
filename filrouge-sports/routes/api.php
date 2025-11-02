@@ -20,6 +20,7 @@ Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 
 Route::get('/terrains',[TerrainController::class,'index']);
+Route::get('/terrains/{id}', [TerrainController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[AuthController::class,'logout']);

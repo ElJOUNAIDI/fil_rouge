@@ -20,8 +20,8 @@ function Navbar() {
 
   return (
     <nav style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-      <Link to="/">Terrains</Link> 
-      {user && <Link to="/my">Mes réservations</Link>} 
+      <Link to="/">Terrains</Link> |{' '}
+      {user && <Link to="/my">Mes réservations</Link>} |{' '}
       {user?.roles?.includes('admin') && <Link to="/admin">Admin</Link>} |{' '}
       {!user && <Link to="/login">Login</Link>} |{' '}
       {!user && <Link to="/register">Register</Link>}

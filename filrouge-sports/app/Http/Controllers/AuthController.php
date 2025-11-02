@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\Role;
+
 class AuthController extends Controller
 {
     public function register(Request $r)
@@ -23,14 +25,18 @@ class AuthController extends Controller
 
         // Récupérer le rôle "user"
         $role = Role::where('name', 'user')->first();
-
         if ($role) {
             $user->roles()->syncWithoutDetaching([$role->id]);
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->json(['user'=>$user,'token'=>$token], 201);
+        // Charger les rôles et transformer pour le frontend
+        $user->load('roles');
+        $userArray = $user->toArray();
+        $userArray['roles'] = $user->roles->pluck('name'); // ['user'] ou ['admin']
+
+        return response()->json(['user'=>$userArray,'token'=>$token], 201);
     }
 
     public function login(Request $r)
@@ -41,7 +47,13 @@ class AuthController extends Controller
             throw ValidationException::withMessages(['email'=>['Identifiants invalides']]);
 
         $token = $user->createToken('api-token')->plainTextToken;
-        return response()->json(['user'=>$user,'token'=>$token]);
+
+        // Charger les rôles
+        $user->load('roles');
+        $userArray = $user->toArray();
+        $userArray['roles'] = $user->roles->pluck('name');
+
+        return response()->json(['user'=>$userArray,'token'=>$token]);
     }
 
     public function logout(Request $r)
@@ -52,6 +64,10 @@ class AuthController extends Controller
 
     public function me(Request $r)
     {
-        return response()->json($r->user());
+        $user = $r->user()->load('roles');
+        $userArray = $user->toArray();
+        $userArray['roles'] = $user->roles->pluck('name');
+
+        return response()->json($userArray);
     }
 }

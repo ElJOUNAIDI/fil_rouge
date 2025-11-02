@@ -9,6 +9,14 @@ class TerrainController extends Controller
         return response()->json(Terrain::where('actif', true)->get());
     }
 
+    public function show($id) {
+        $terrain = Terrain::find($id);
+        if (!$terrain) {
+            return response()->json(['message' => 'Terrain non trouvé'], 404);
+        }
+        return response()->json($terrain);
+    }
+
     public function store(Request $r){
         if(!$r->user()->hasRole('admin')) abort(403);
         $data = $r->validate([
