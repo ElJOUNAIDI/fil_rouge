@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
+use App\Models\Role;
 class AuthController extends Controller
 {
     public function register(Request $r)
@@ -21,7 +21,12 @@ class AuthController extends Controller
             'password'=>Hash::make($data['password'])
         ]);
 
-        $user->attachRole('user');
+        // Récupérer le rôle "user"
+        $role = Role::where('name', 'user')->first();
+
+        if ($role) {
+            $user->roles()->syncWithoutDetaching([$role->id]);
+        }
 
         $token = $user->createToken('api-token')->plainTextToken;
 
