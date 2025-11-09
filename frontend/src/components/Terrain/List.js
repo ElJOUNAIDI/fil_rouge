@@ -6,7 +6,7 @@ export default function List(){
   const [terrains,setTerrains] = useState([]);
   useEffect(()=>{ api.get('/terrains').then(r=>setTerrains(r.data)).catch(()=>alert('Erreur')); },[]);
   return (
-    <div>
+    <div style={{marginTop: '100px'}}>
       <h2>Terrains disponibles</h2>
       {terrains.map(t=>(
         <div key={t.id} style={{border:'1px solid #eee',padding:10,marginBottom:10}}>
