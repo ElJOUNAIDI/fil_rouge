@@ -1,0 +1,29 @@
+/* Image d’arrière-plan */
+.register-bg {
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+}
+
+/* Carte du formulaire */
+.register-card {
+  margin-top: -100px;
+  backdrop-filter: blur(30px);
+}
+
+/* Titre */
+.register-card h2 {
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* Bouton principal */
+.register-card button.btn-primary {
+  width: 100%;
+}
+
+/* Formulaire */
+.register-card .form-control {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
