@@ -58,4 +58,17 @@ class ReservationController extends Controller
         $res->delete();
         return response()->json(['message'=>'deleted']);
     }
+
+    // Mettre à jour le statut d'une réservation (admin)
+    public function updateStatus(Request $r, $id)
+    {
+        if (!$r->user()->hasRole('admin')) abort(403);
+
+        $reservation = Reservation::findOrFail($id);
+        $r->validate(['status' => 'required|in:pending,rejected,completed']);
+        $reservation->statut = $r->status;
+        $reservation->save();
+
+        return response()->json($reservation);
+    }
 }

@@ -31,8 +31,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::delete('/reservations/{id}',[ReservationController::class,'destroy']);
 
     Route::get('/admin/reservations',[ReservationController::class,'allReservations']);
+    Route::put('/admin/reservations/{id}/status', [ReservationController::class,'updateStatus']);
     Route::post('/admin/terrains',[TerrainController::class,'store']);
     Route::put('/admin/terrains/{id}',[TerrainController::class,'update']);
     Route::delete('/admin/terrains/{id}',[TerrainController::class,'destroy']);
+    
 });
 

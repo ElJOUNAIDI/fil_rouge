@@ -32,6 +32,9 @@ export default function Detail(){
       <p>{terrain.description}</p>
       <p>Prix/h: {terrain.prix_par_heure} €</p>
 
+      <h3>Adresse</h3>
+      <p>{terrain.adresse}</p>
+
       <h3>Réserver</h3>
       <form onSubmit={submit}>
         <input type="date" value={date} onChange={e=>setDate(e.target.value)} required /><br/>
@@ -39,7 +42,7 @@ export default function Detail(){
         <input type="time" value={end} onChange={e=>setEnd(e.target.value)} required /><br/>
         <select value={mode} onChange={e=>setMode(e.target.value)}>
           <option value="cash">Espèces</option>
-          <option value="card">Carte</option>
+          {/* <option value="card">Carte</option> */}
         </select><br/>
         <button>Réserver</button>
       </form>

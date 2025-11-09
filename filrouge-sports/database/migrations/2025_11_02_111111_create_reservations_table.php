@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('date_reservation');
             $table->time('heure_debut');
             $table->time('heure_fin');
-            $table->enum('statut',['pending','confirmed','cancelled'])->default('pending');
+            $table->enum('statut',['pending','rejected','completed'])->default('pending');
             $table->decimal('montant',8,2)->default(0);
             $table->string('mode_paiement')->nullable();
             $table->timestamps();
