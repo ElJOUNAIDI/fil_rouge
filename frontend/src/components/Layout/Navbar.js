@@ -21,7 +21,7 @@ export default function Navbar() {
           <img
             src={logo}
             alt="Logo"
-            // draggable="false"
+            
           />
         </Link>
 
