@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api';
+import '../../style/AdminDashboard.css'; // 👈 crée ce fichier si pas encore fait
 
 export default function AdminDashboard() {
   const [terrains, setTerrains] = useState([]);
   const [reservations, setReservations] = useState([]);
-  const [form, setForm] = useState({ nom: '', prix_par_heure: 0, description: '', adresse: '', capacite: 10 });
+  const [form, setForm] = useState({
+    nom: '',
+    prix_par_heure: 0,
+    description: '',
+    adresse: '',
+    capacite: 10,
+  });
   const [editForm, setEditForm] = useState(null);
 
-  // Charger terrains et réservations
   const fetch = async () => {
     const t = await api.get('/terrains');
     setTerrains(t.data);
@@ -15,9 +21,10 @@ export default function AdminDashboard() {
     setReservations(r.data);
   };
 
-  useEffect(() => { fetch().catch(() => {}); }, []);
+  useEffect(() => {
+    fetch().catch(() => {});
+  }, []);
 
-  // Créer un terrain
   const create = async () => {
     try {
       await api.post('/admin/terrains', form);
@@ -29,19 +36,14 @@ export default function AdminDashboard() {
     }
   };
 
-  // Supprimer un terrain
   const del = async (id) => {
     if (!window.confirm('Supprimer ce terrain ?')) return;
     await api.delete(`/admin/terrains/${id}`);
     fetch();
   };
 
-  // Commencer l'édition
-  const startEdit = (terrain) => {
-    setEditForm({ ...terrain });
-  };
+  const startEdit = (terrain) => setEditForm({ ...terrain });
 
-  // Enregistrer les modifications
   const updateTerrain = async () => {
     try {
       await api.put(`/admin/terrains/${editForm.id}`, editForm);
@@ -53,104 +55,122 @@ export default function AdminDashboard() {
     }
   };
 
-  // Mettre à jour le statut d'une réservation
   const updateStatus = async (id, status) => {
     await api.put(`/admin/reservations/${id}/status`, { status });
     fetch();
   };
 
   return (
-    <div>
-      <h2>Admin — Terrains</h2>
+    <div className="admin-dashboard">
+      <div className="dashboard-header">
+        <h2>Tableau de Bord Administrateur</h2>
+        <p>Gérez vos terrains et vos réservations facilement</p>
+      </div>
 
-      {/* Formulaire création terrain */}
-      <div style={{ marginBottom: 20, border: '1px solid #ccc', padding: 10 }}>
-        <h3>Créer un terrain</h3>
+      {/* === FORMULAIRE CRÉATION === */}
+      <div className="create-terrain-form">
+        <h3>Créer un Terrain</h3>
 
-        <input 
-            placeholder="Nom" 
-            value={form.nom} 
-            onChange={e => setForm({ ...form, nom: e.target.value })} 
-            style={{ display:'block', marginBottom:5 }} 
+        <input
+          placeholder="Nom du terrain"
+          value={form.nom}
+          onChange={(e) => setForm({ ...form, nom: e.target.value })}
+          required
         />
-
-        <input 
-            placeholder="Prix par heure (€)" 
-            type="number" 
-            value={form.prix_par_heure} 
-            onChange={e => setForm({ ...form, prix_par_heure: e.target.value })} 
-            style={{ display:'block', marginBottom:5 }} 
+        <input
+          placeholder="Prix par heure (€)"
+          type="number"
+          value={form.prix_par_heure}
+          onChange={(e) => setForm({ ...form, prix_par_heure: e.target.value })}
+          required
         />
-
-        <textarea 
-            placeholder="Description" 
-            value={form.description} 
-            onChange={e => setForm({ ...form, description: e.target.value })} 
-            style={{ display:'block', marginBottom:5 }} 
+        <textarea
+          placeholder="Description"
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
         />
-
-        <input 
-            placeholder="Adresse" 
-            value={form.adresse} 
-            onChange={e => setForm({ ...form, adresse: e.target.value })} 
-            style={{ display:'block', marginBottom:5 }} 
+        <input
+          placeholder="Adresse"
+          value={form.adresse}
+          onChange={(e) => setForm({ ...form, adresse: e.target.value })}
         />
-
-        <input 
-            placeholder="Capacité" 
-            type="number" 
-            value={form.capacite} 
-            onChange={e => setForm({ ...form, capacite: e.target.value })} 
-            style={{ display:'block', marginBottom:5 }} 
+        <input
+          placeholder="Capacité"
+          type="number"
+          value={form.capacite}
+          onChange={(e) => setForm({ ...form, capacite: e.target.value })}
         />
-
         <label>
-            Actif : 
-            <input 
-            type="checkbox" 
-            checked={form.actif || false} 
-            onChange={e => setForm({ ...form, actif: e.target.checked })} 
-            style={{ marginLeft:5 }}
-            />
+          <input
+            type="checkbox"
+            checked={form.actif || false}
+            onChange={(e) => setForm({ ...form, actif: e.target.checked })}
+          />
+          Terrain actif
         </label>
 
-        <button onClick={create} style={{ display:'block', marginTop:10 }}>Créer</button>
-        </div>
+        <button onClick={create}>Créer</button>
+      </div>
 
-
-      {/* Formulaire modification terrain */}
+      {/* === FORMULAIRE MODIFICATION === */}
       {editForm && (
-        <div style={{ marginBottom: 20, border: '1px solid #ccc', padding: 10 }}>
-          <h3>Modifier Terrain</h3>
-          <input placeholder="Nom" value={editForm.nom} onChange={e => setEditForm({ ...editForm, nom: e.target.value })} />
-          <input placeholder="Prix/h" type="number" value={editForm.prix_par_heure} onChange={e => setEditForm({ ...editForm, prix_par_heure: e.target.value })} />
-          <button onClick={updateTerrain}>Enregistrer</button>
-          <button onClick={() => setEditForm(null)}>Annuler</button>
+        <div className="edit-terrain-form">
+          <h3>Modifier le Terrain</h3>
+          <input
+            placeholder="Nom"
+            value={editForm.nom}
+            onChange={(e) => setEditForm({ ...editForm, nom: e.target.value })}
+          />
+          <input
+            placeholder="Prix/h"
+            type="number"
+            value={editForm.prix_par_heure}
+            onChange={(e) => setEditForm({ ...editForm, prix_par_heure: e.target.value })}
+          />
+          <button onClick={updateTerrain}>Mettre à jour</button>
+          <button onClick={() => setEditForm(null)} className="cancel-btn">
+            Annuler
+          </button>
         </div>
       )}
 
-      {/* Liste des terrains */}
-      {terrains.map(t => (
-        <div key={t.id} style={{ border: '1px solid #eee', padding: 10, marginBottom: 10 }}>
-          <p>{t.nom} — {t.prix_par_heure} €</p>
-          <button onClick={() => startEdit(t)}>Modifier</button>{' '}
-          <button onClick={() => del(t.id)}>Supprimer</button>
-        </div>
-      ))}
+      {/* === LISTE TERRAINS === */}
+      <h2 className="section-title">Terrains</h2>
+      <div className="card-container">
+        {terrains.map((t) => (
+          <div key={t.id} className="admin-card">
+            <p>
+              <strong>{t.nom}</strong> — {t.prix_par_heure} €
+            </p>
+            <button onClick={() => startEdit(t)}>Modifier</button>
+            <button onClick={() => del(t.id)}>Supprimer</button>
+          </div>
+        ))}
+      </div>
 
-      <h2>Réservations</h2>
-      {reservations.map(r => (
-        <div key={r.id} style={{ border: '1px solid #eee', padding: 10, marginBottom: 10 }}>
-          <p>{r.user.name} — {r.terrain.nom} — {r.date_reservation} {r.heure_debut}-{r.heure_fin}</p>
-          <p>Status : <strong>{r.statut}</strong></p>
-          {r.statut === 'pending' && (
-            <>
-              <button onClick={() => updateStatus(r.id, 'completed')}>Valider</button>{' '}
-              <button onClick={() => updateStatus(r.id, 'rejected')}>Refuser</button>
-            </>
-          )}
-        </div>
-      ))}
+      {/* === LISTE RÉSERVATIONS === */}
+      <h2 className="section-title">Réservations</h2>
+      <div className="card-container">
+        {reservations.map((r) => (
+          <div key={r.id} className="admin-card">
+            <p>
+              <strong>{r.user.name}</strong> — {r.terrain.nom}
+            </p>
+            <p>
+              {r.date_reservation} {r.heure_debut}-{r.heure_fin}
+            </p>
+            <p>
+              Statut : <span className={`status ${r.statut}`}>{r.statut}</span>
+            </p>
+            {r.statut === 'pending' && (
+              <>
+                <button onClick={() => updateStatus(r.id, 'completed')}>Valider</button>
+                <button onClick={() => updateStatus(r.id, 'rejected')}>Refuser</button>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
