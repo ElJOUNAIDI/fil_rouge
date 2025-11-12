@@ -8,6 +8,7 @@ import MyReservations from './components/Reservation/MyReservations';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import PrivateRoute from './components/Auth/PrivateRoute';
 import Navbar from './components/Layout/Navbar';
+import Footer  from './components/Layout/Footer';   
 
 // function Navbar() {
 //   const navigate = useNavigate();
@@ -57,6 +58,7 @@ function App() {
           } />
         </Routes>
       </div>
+      <Footer />
     </BrowserRouter>
   );
 }
