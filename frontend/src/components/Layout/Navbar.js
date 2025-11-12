@@ -67,12 +67,12 @@ export default function Navbar() {
               <>
                 <li className="nav-item ms-3">
                   <Link className="btn btn-dark btn-rounded" to="/login">
-                    <i className="fas fa-sign-in-alt pe-2"></i>Login
+                    Login
                   </Link>
                 </li>
                 <li className="nav-item ms-2">
                   <Link className="btn btn-outline-dark btn-rounded" to="/register">
-                    <i className="fas fa-user-plus pe-2"></i>Register
+                    Register
                   </Link>
                 </li>
               </>
