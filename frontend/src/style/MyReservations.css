@@ -1,0 +1,118 @@
+.my-reservations {
+  background-color: #f9faf9;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 73px; 
+}
+
+/* === HEADER === */
+.header-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header-section h2 {
+  color: #6FAA09;
+  font-weight: 700;
+  font-size: 26px;
+  margin-bottom: 5px;
+}
+
+.header-section p {
+  color: #555;
+  font-size: 15px;
+}
+
+/* === LISTE DES RÉSERVATIONS === */
+.reservations-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === CARTE RÉSERVATION === */
+.reservation-card {
+  background: #fff;
+  border-radius: 12px;
+  border-left: 5px solid #6FAA09;
+  box-shadow: 0 4px 10px rgba(111, 170, 9, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 90%;
+  max-width: 700px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.reservation-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(111, 170, 9, 0.25);
+}
+
+/* === INFORMATIONS === */
+.reservation-info h3 {
+  color: #6FAA09;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.reservation-info p {
+  color: #333;
+  margin: 5px 0;
+  font-size: 15px;
+}
+
+/* === STATUT === */
+.status {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.pending {
+  color: #ff9800;
+}
+.status.completed {
+  color: #6FAA09;
+}
+.status.rejected {
+  color: #dc3545;
+}
+
+/* === BOUTON ANNULER === */
+.cancel-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  display: block;
+  margin: 15px auto 0 auto;
+}
+
+.cancel-btn:hover {
+  background-color: #b32c38;
+  transform: translateY(-2px);
+}
+
+/* === TEXTE VIDE === */
+.empty-text {
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+  margin-top: 50px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .reservation-card {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .reservation-info h3 {
+    font-size: 18px;
+  }
+}

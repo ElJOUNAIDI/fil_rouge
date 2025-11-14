@@ -1,24 +1,51 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '../../api';
+import '../../style/MyReservations.css'; 
 
-export default function MyReservations(){
+export default function MyReservations() {
   const [res, setRes] = useState([]);
-  useEffect(()=>{ api.get('/reservations').then(r=>setRes(r.data)).catch(()=>alert('Erreur')); },[]);
+
+  useEffect(() => {
+    api.get('/reservations')
+      .then(r => setRes(r.data))
+      .catch(() => alert('Erreur lors du chargement'));
+  }, []);
+
   const del = async (id) => {
-    if (!window.confirm('Supprimer ?')) return;
+    if (!window.confirm('Supprimer cette réservation ?')) return;
     await api.delete(`/reservations/${id}`);
-    setRes(res.filter(x=>x.id !== id));
+    setRes(res.filter(x => x.id !== id));
   };
+
   return (
-    <div>
-      <h2>Mes réservations</h2>
-      {res.map(r=>(
-        <div key={r.id} style={{border:'1px solid #eee',padding:10,marginBottom:10}}>
-          <p><strong>{r.terrain?.nom}</strong> — {r.date_reservation} {r.heure_debut}-{r.heure_fin}</p>
-          <p>Montant: {r.montant} € — Statut: {r.statut}</p>
-          <button onClick={()=>del(r.id)}>Annuler</button>
+    <div className="my-reservations">
+      <div className="header-section">
+        <h2>Mes Réservations</h2>
+        <p>Consultez et gérez vos réservations facilement</p>
+      </div>
+
+      {res.length === 0 ? (
+        <p className="empty-text">Aucune réservation trouvée.</p>
+      ) : (
+        <div className="reservations-list">
+          {res.map(r => (
+            <div key={r.id} className="reservation-card">
+              <div className="reservation-info">
+                <h3>{r.terrain?.nom}</h3>
+                <p>
+                  <strong>Date :</strong> {r.date_reservation} <br />
+                  <strong>Heure :</strong> {r.heure_debut} - {r.heure_fin}
+                </p>
+                <p>
+                  <strong>Montant :</strong> {r.montant} € <br />
+                  <strong>Statut :</strong> <span className={`status ${r.statut}`}>{r.statut}</span>
+                </p>
+              </div>
+              <button className="cancel-btn" onClick={() => del(r.id)}>Annuler</button>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 }
